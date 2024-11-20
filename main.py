@@ -8,6 +8,9 @@ load_dotenv()
 TOKEN = os.getenv("BOT_TOKEN")
 RADIO_TIEMPO = os.getenv("RADIO_TIEMPO")
 
+print(f"Token: {TOKEN}")
+print(f"Radio Tiempo: {RADIO_TIEMPO}")
+
 bot = commands.Bot(command_prefix='*', intents=discord.Intents.all())
 
 @bot.event
