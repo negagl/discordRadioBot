@@ -1,3 +1,5 @@
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import threading
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -38,6 +40,19 @@ async def leave(ctx):
         await ctx.send("Desconectado del canal de voz.")
     else:
         await ctx.send("No estoy en un canal de voz.")
+        
+class HealthCheckHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"Bot is running")
+
+def run_http_server():
+    server = HTTPServer(("0.0.0.0", 8080), HealthCheckHandler)
+    server.serve_forever()
+
+# Ejecutar el servidor HTTP en un hilo separado
+threading.Thread(target=run_http_server, daemon=True).start()
 
 # Ejecutar el bot
 bot.run(TOKEN)
